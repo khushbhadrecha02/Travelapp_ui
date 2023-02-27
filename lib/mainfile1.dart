@@ -1,6 +1,15 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class MainFile1 extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:travelapp/mainfile2.dart';
+
+class MainFile1 extends StatefulWidget {
+  @override
+  State<MainFile1> createState() => _MainFile1State();
+}
+
+class _MainFile1State extends State<MainFile1> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: SideDrawer(),
@@ -19,200 +28,102 @@ class MainFile1 extends StatelessWidget {
         ),
         backgroundColor: Colors.amber,
       ),
-      body: Column(children: [
-        Expanded(
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  color: Colors.orange,
-                  child: Image.asset(
-                    'images/img1.jpg',
-                    fit: BoxFit.cover,
-
-                  ),
-                  margin: EdgeInsets.only(
-                      left: 500, right: 500, top: 10, bottom: 10),
-                ),
-                flex: 3,
-              ),
-              Expanded(
-                  child: Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      child: Center(
-                          child: Text(
-                        'Ceylon Tea Tour',
-                        style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      )),
-                    ),
-                    flex: 2,
-                  ),
-                  Expanded(
-                      child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          child: Center(
-                            child: Text(
-                              '14 hours',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          margin: EdgeInsets.only(left: 590),
+      body: FutureBuilder<List<dynamic>>(
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.only(left: 300, right: 300, bottom: 5),
+                  height: 440,
+                  width: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                        child: Column(
+                      children: [
+                        Image.network(
+                          snapshot.data![index]['avatar'].toString(),
+                          height: 300,
+                          width: 440,
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          child: Center(
-                            child: Text(
-                              'Rs 60/person',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          margin: EdgeInsets.only(right: 560),
+                        Text(
+                          snapshot.data![index]['name'].toString(),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ),
-                    ],
-                  )),
-                ],
-              )),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  color: Colors.orange,
-                  child: Image.asset(
-                    'images/img2.jpg',
-                    fit: BoxFit.cover,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                child: Text(
+                                  snapshot.data![index]['time'].toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                                child: Container(
+                              child: Text(
+                                snapshot.data![index]['price'].toString(),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              margin: EdgeInsets.only(left: 140),
+                            )),
+                          ],
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return MainFile2();
+                                },
+                              ),
+                            );
+                          },
+                          child: Icon(
+                            Icons.arrow_right,
+                            size: 45,
+                          ),
+                        ),
+                      ],
+                    )),
                   ),
-                  margin: EdgeInsets.only(
-                      left: 500, right: 500, top: 10, bottom: 10),
-                ),
-                flex: 3,
-              ),
-              Expanded(
-                  child: Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      child: Center(
-                          child: Text(
-                        'Dambulla Temple',
-                        style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      )),
-                    ),
-                    flex: 2,
-                  ),
-                  Expanded(
-                      child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          child: Center(
-                            child: Text(
-                              '16 hours',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          margin: EdgeInsets.only(left: 590),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          child: Center(
-                            child: Text(
-                              'Rs 70/person',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          margin: EdgeInsets.only(right: 560),
-                        ),
-                      ),
-                    ],
-                  )),
-                ],
-              )),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  color: Colors.orange,
-                  child: Image.asset(
-                    'images/img3.jpg',
-                    fit: BoxFit.cover,
-                  ),
-                  margin: EdgeInsets.only(
-                      left: 500, right: 500, top: 10, bottom: 10),
-                ),
-                flex: 3,
-              ),
-              Expanded(
-                  child: Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      child: Center(
-                          child: Text(
-                        'Old Port Galle',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      )),
-                    ),
-                    flex: 2,
-                  ),
-                  Expanded(
-                      child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          child: Center(
-                            child: Text(
-                              '15 hours',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          margin: EdgeInsets.only(left: 590),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          child: Center(
-                            child: Text(
-                              'Rs 80/person',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          margin: EdgeInsets.only(right: 560),
-                        ),
-                      ),
-                    ],
-                  )),
-                ],
-              )),
-            ],
-          ),
-        ),
-      ]),
-      backgroundColor: Colors.orange,
+                );
+              },
+              itemCount: snapshot.data!.length,
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+        future: getTravelData(),
+      ),
     );
+  }
+
+  Future<List<dynamic>> getTravelData() async {
+    http.Response res = await http
+        .get(Uri.parse('https://63fb07e64e024687bf70dc13.mockapi.io/travel'));
+    List<dynamic> jsonData = jsonDecode(res.body.toString());
+    return jsonData;
+  }
+
+  Future<dynamic> getOneData(id) async {
+    http.Response res = await http.get(
+        Uri.parse('https://63fb07e64e024687bf70dc13.mockapi.io/travel/$id'));
+    dynamic jsonData = jsonDecode(res.body.toString());
+    return jsonData;
   }
 }
 
